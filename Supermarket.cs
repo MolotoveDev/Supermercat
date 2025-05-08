@@ -19,6 +19,8 @@ namespace Supermercat
         Dictionary<string, Person> customers;
         SortedDictionary<int, Item> warehouse;
         const string fileItems = "GROCERIES.txt";
+        const string fileCashiers = "CASHIERS.txt";
+        const string fileCustomers = "CUSTOMERS.txt";
 
         #endregion
 
@@ -57,25 +59,48 @@ namespace Supermercat
             StreamReader sr = new StreamReader(fileName);
         }
 
+        /// <summary>
+        /// Method to load the items from a file.
+        /// </summary>
+        /// <param name="fileName">Name of the file to load the items.</param>
+        /// <returns>Sorted dictionary with the warehouse items.</returns>
         private SortedDictionary<int, Item> LoadItems(string fileName)
         {
+            //Setting the attributes
             StreamReader sr = new StreamReader(fileName);
-            //name;category;format;priceEach
+            int code = 1;
             string[] split;
             string line;
-            string name, category, format;
+            string name;
+            Item.Category category;
+            Item.Packaging format;
             double priceEach;
+            bool sale = false;
+            double stock;
+            int minStock;
+            Random r = new Random(); //Random to create the stock and minStock values + sale value.
 
             line = sr.ReadLine();
-            while(line != null)
+            while (line != null)
             {
                 split = line.Split(';');
                 name = split[0];
-                category = split[1];
-                format = split[2];
+                category = Enum.Parse<Item.Category>(split[1], true); //Conversion of string to enum
+                format = Enum.Parse<Item.Packaging>(split[2], true); //Conversion of string to enum
                 priceEach = double.Parse(split[3]);
-                Item item = new Item(name, category, format, priceEach);
+
+                if (r.Next(0, 20) >= 10) sale = true;
+
+                stock = r.Next(50, 125);
+                minStock = r.Next(10, 49);
+
+                Item item = new Item(code, name, sale, priceEach, category, format, stock, minStock); //Constructor for the items
+                warehouse.Add(code, item);
+                code++;
+                line = sr.ReadLine();
             }
+            sr.Close();
+            return warehouse;
         }
 
         #endregion
