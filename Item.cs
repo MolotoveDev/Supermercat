@@ -162,6 +162,11 @@ namespace Supermercat
 
         #region Icomparable<Item> Members
 
+        /// <summary>
+        /// Method to compare two items.
+        /// </summary>
+        /// <param name="other">Other item to compare.</param>
+        /// <returns>Comparable result to sort items.</returns>
         public int CompareTo(Item? other)
         {
             return this.code.CompareTo(other.code);
