@@ -169,7 +169,7 @@ namespace Supermercat
         /// <returns>Comparable result to sort items.</returns>
         public int CompareTo(Item? other)
         {
-            return this.code.CompareTo(other.code);
+            return this.stock.CompareTo(other.code);
         }
         
         #endregion
