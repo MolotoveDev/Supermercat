@@ -28,6 +28,9 @@ namespace Supermercat
 
         public Supermarket(string name, string address, string fileCashiers, string fileCustomers, string fileItems, int activeLines)
         {
+            this.name = name;
+            this.address = address;
+            this.activeLines = activeLines;
             LoadCustomers(fileCustomers);
             LoadStaff(fileCashiers);
             LoadItems(fileItems);
