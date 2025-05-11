@@ -149,11 +149,11 @@ namespace Supermercat
             string output;
             if(onSale)
             {
-                output = $"CODE->{this.code} DESCRIPTION->{this.description} CATEGORY ->{this.category} STOCK ->{this.stock} PRICE->{this.price}{currency} ON SALE ->Y({this.Price}){currency}";
+                output = $"CODE->{this.code} DESCRIPTION->{this.description} CATEGORY ->{this.category} STOCK ->{this.stock} MIN_STOCK ->{this.minStock} PRICE->{this.price}{currency} ON SALE ->Y({this.Price}){currency}";
             }
             else
             {
-                output = $"CODE->{this.code} DESCRIPTION->{this.description} CATEGORY ->{this.category} STOCK ->{this.stock} PRICE->{this.price}{currency} ON SALE ->N";
+                output = $"CODE->{this.code} DESCRIPTION->{this.description} CATEGORY ->{this.category} STOCK ->{this.stock} MIN_STOCK ->{this.minStock} PRICE->{this.price}{currency} ON SALE ->N";
             }
             return output;
         }
@@ -169,7 +169,7 @@ namespace Supermercat
         /// <returns>Comparable result to sort items.</returns>
         public int CompareTo(Item? other)
         {
-            return this.stock.CompareTo(other.code);
+            return this.stock.CompareTo(other.stock);
         }
         
         #endregion
