@@ -4,9 +4,14 @@
     {
         static void Main(string[] args)
         {
+            const string fileItems = "GROCERIES.txt";
+            const string fileCashiers = "CASHIERS.txt";
+            const string fileCustomers = "CUSTOMERS.txt";
+            Supermarket mercadona = new Supermarket("mercadona", "no se", fileCashiers, fileCustomers, fileItems, 1);
 
+            Console.WriteLine("ya esta");
         }
-        
+
         /*public static void MostrarMenu()
         {
             Console.WriteLine("1- UN CLIENT ENTRA AL SUPER I OMPLE EL SEU CARRO DE LA COMPRA");
@@ -265,6 +270,6 @@
             Console.WriteLine(msg);
             Console.ReadKey();
         }*/
-    
+
     }
 }
