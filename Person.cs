@@ -97,13 +97,25 @@ namespace Supermercat
             {
                 _fidelity_card = fidelityCard;
                 _id = id;
-                _fullNanme= fullName;
+                _fullNanme = fullName;
             }
             /// <summary>
             /// The property calculates the rating of a customer according to the gross amount 
             /// of his/her purchases.The rating is the 2% of the customer’s purchases
             /// </summary>
-            public override double GetRating => (2 / _totalInvoiced) * 100;
+            public override double GetRating
+            {
+                get
+                {
+                    double resposta = 0;
+                    if (_totalInvoiced != 0)
+                    {
+                        resposta = (2 / _totalInvoiced) *100;
+                    }
+                    return resposta;
+                }
+
+            }
 
 
             /// <summary>
