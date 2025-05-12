@@ -128,8 +128,8 @@ namespace Supermercat
                 name = split[0];
                 category = Enum.Parse<Item.Category>(split[1], true); //Conversion of string to enum
                 if (split[2] == "K") { valor = "Kg"; }
-                if (split[2] == "U") { valor = "Unit"; }
-                if (split[2] == "P") { valor = "Package"; }
+                else if (split[2] == "U") { valor = "Unit"; }
+                else if (split[2] == "P") { valor = "Package"; }
                 format = Enum.Parse<Item.Packaging>(valor, true); //Conversion of string to enum
                 priceEach = double.Parse(split[3]);
 
@@ -149,3 +149,4 @@ namespace Supermercat
         #endregion
     }
 }
+ 
