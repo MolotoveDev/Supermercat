@@ -133,7 +133,7 @@ namespace Supermercat
                 format = Enum.Parse<Item.Packaging>(valor, true); //Conversion of string to enum
                 priceEach = double.Parse(split[3]);
 
-                if (r.Next(0, 20) >= 10) sale = true;
+                if (r.Next(0, 20) >= 15) sale = true;
 
                 stock = r.Next(50, 125);
                 minStock = r.Next(10, 49);
