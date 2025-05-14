@@ -97,6 +97,16 @@ namespace Supermercat
             }
         }
 
+        /// <summary>
+        /// Method that return the total points gained by the customer on this purchase.
+        /// </summary>
+        /// <param name="totalInvoiced">Total spent by the customer on this purchase</param>
+        /// <returns>Integer number of points.</returns>
+        public int RawPointsObtainedAtCheckout(double totalInvoiced)
+        {
+            return (int)Math.Round(totalInvoiced * 0.01);
+        }
+
         #endregion
     }
 }
