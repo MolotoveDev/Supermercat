@@ -9,7 +9,9 @@
             const string fileCustomers = "CUSTOMERS.txt";
             Supermarket mercadona = new Supermarket("mercadona", "no se", fileCashiers, fileCustomers, fileItems, 1); //WORKS
             mercadona.GetItemsByStock(); //WORKS
-            
+            ShoppingCart cart = new ShoppingCart((Person.Customer)mercadona.GetAvailableCustomer(), DateTime.Now);
+            cart.AddOne(mercadona.Warehouse.First().Value, 1); //WORKS
+            cart.AddAllRandomly(mercadona.Warehouse); //WORKS
         }
 
         /*public static void MostrarMenu()
