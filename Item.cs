@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -169,7 +169,7 @@ namespace Supermercat
         /// <returns>Comparable result to sort items.</returns>
         public int CompareTo(Item? other)
         {
-            return this.stock.CompareTo(other.code);
+            return this.stock.CompareTo(other.stock);
         }
         
         #endregion
