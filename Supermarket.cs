@@ -48,10 +48,40 @@ namespace Supermercat
             get { return activeLines; }
         }
 
+        /// <summary>
+        /// Property to get a reference to the warehouse (dictionary of items).
+        /// </summary>
+        public SortedDictionary<int, Item> Warehouse
+        {
+            get { return warehouse; }
+        }
+
+        /// <summary>
+        /// Property to get a reference to the staff (dictionary of cashiers).
+        /// </summary>
+        public Dictionary<string, Person> Staff
+        {
+            get { return cashiers; }
+        }
+
+        /// <summary>
+        /// Property to get a reference to the customers (dictionary of customers).
+        /// </summary>
+        public Dictionary<string, Person> Customers
+        {
+            get { return customers; }
+        }
+
+
         #endregion
 
         #region Methods
 
+        /// <summary>
+        /// Method to load the customers from a file.
+        /// </summary>
+        /// <param name="fileName">Name of the file to load.</param>
+        /// <returns>Dictionary with customers information</returns>
         private Dictionary<string, Person> LoadCustomers(string fileName)
         {
             StreamReader sr = new StreamReader(fileName);
@@ -79,6 +109,11 @@ namespace Supermercat
             return customers;
         }
 
+        /// <summary>
+        /// Method to load the cashiers from a file.
+        /// </summary>
+        /// <param name="fileName">Name of the file to load.</param>
+        /// <returns>Dictionary with Cashiers information</returns>
         private Dictionary<string, Person> LoadCashiers(string fileName)
         {
             StreamReader sr = new StreamReader(fileName);
@@ -145,6 +180,21 @@ namespace Supermercat
             }
             sr.Close();
             return warehouse;
+        }
+
+        /// <summary>
+        /// Method to get the items in the warehouse sorted by stock from lowest to highest.
+        /// </summary>
+        /// <returns>Sorted set with warehouse items sorted by smallest to largest stock.</returns>
+        public SortedSet<Item> GetItemsByStock()
+        {
+            SortedSet<Item> items = new SortedSet<Item>();
+            foreach (Item i in warehouse.Values)
+            {
+                items.Add(i);
+            }
+            items.OrderBy(i => i.Stock);
+            return items;
         }
         #endregion
     }

@@ -7,9 +7,9 @@
             const string fileItems = "GROCERIES.txt";
             const string fileCashiers = "CASHIERS.txt";
             const string fileCustomers = "CUSTOMERS.txt";
-            Supermarket mercadona = new Supermarket("mercadona", "no se", fileCashiers, fileCustomers, fileItems, 1);
-
-            Console.WriteLine("ya esta");
+            Supermarket mercadona = new Supermarket("mercadona", "no se", fileCashiers, fileCustomers, fileItems, 1); //WORKS
+            mercadona.GetItemsByStock(); //WORKS
+            
         }
 
         /*public static void MostrarMenu()
