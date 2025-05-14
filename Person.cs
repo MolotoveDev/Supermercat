@@ -134,6 +134,19 @@ namespace Supermercat
             {
                 return $"DNI/NIE-> {_id} NOM-> {_fullNanme} RATING-> {GetRating} vendes-> {_totalInvoiced}€ PUNTS->{_points} DISPONIBLE-> {base.ToString()}";
             }
+            public override bool Equals(object? obj)
+            {
+                bool igual;
+                if (ReferenceEquals(null, obj)) igual = false;
+                else if (ReferenceEquals(this, obj)) igual = true;
+                else if (obj.GetType() != this.GetType()) igual = false;
+                else igual = this.Equals((Customer)obj);
+                return igual;
+            }
+            private bool Equals(Customer other)
+            {
+               return this.active == other.active;
+            }
         }
         public class Cashier : Person
         {

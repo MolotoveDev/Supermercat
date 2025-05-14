@@ -132,7 +132,7 @@ namespace Supermercat
             sr.Close();
             return cashiers;
         }
-
+        
         /// <summary>
         /// Method to load the items from a file.
         /// </summary>
@@ -195,6 +195,14 @@ namespace Supermercat
             }
             items.OrderBy(i => i.Stock);
             return items;
+        }
+        public Person GetAvailableCustomer()
+        {
+            return customers.Values.FirstOrDefault(c => c.Active == false);
+        }
+        public Person GetAvaibleCashier()
+        {
+            return cashiers.Values.FirstOrDefault(c => c.Active == false);
         }
         #endregion
     }
