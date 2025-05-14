@@ -149,7 +149,7 @@ namespace Supermercat
             string output;
             if(onSale)
             {
-                output = $"CODE->{this.code} DESCRIPTION->{this.description} CATEGORY ->{this.category} STOCK ->{this.stock} MIN_STOCK ->{this.MinStock} PRICE->{this.price}{currency} ON SALE ->Y({Math.Round(this.Price,2)}{currency}";
+                output = $"CODE->{this.code} DESCRIPTION->{this.description} CATEGORY ->{this.category} STOCK ->{this.stock} MIN_STOCK ->{this.MinStock} PRICE->{this.price}{currency} ON SALE ->Y({Math.Round(this.Price,2)}{currency})";
             }
             else
             {
