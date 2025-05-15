@@ -132,9 +132,10 @@ namespace Supermercat
         #region Methods
 
         /// <summary>
-        /// Method to update the stock of any item.
+        /// Updates the stock quantity for the specified item.
         /// </summary>
-        /// <param name="stock">Updated stock</param>
+        /// <param name="item">The item whose stock quantity is to be updated.</param>
+        /// <param name="qty">The new stock quantity to set for the item. Must be a non-negative value.</param>
         public void UpdateStock(Item item, double qty)
         {
             item.stock = qty;
