@@ -196,13 +196,53 @@ namespace Supermercat
             items.OrderBy(i => i.Stock);
             return items;
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public Person GetAvailableCustomer()
         {
-            return customers.Values.FirstOrDefault(c => c.Active == false);
+            int index = 0;
+            bool found = false;
+            Person person = null;
+            
+            while(index < customers.Count && !found)
+            {
+                if(!customers.ElementAt(index).Value.Active)
+                {
+                    found = true;
+                    person = customers.ElementAt(index).Value;
+                }
+                else
+                {
+                    index++;
+                }
+            }
+            return person;
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public Person GetAvaibleCashier()
         {
-            return cashiers.Values.FirstOrDefault(c => c.Active == false);
+            int index = 0;
+            bool found = false;
+            Person person = null;
+
+            while (index < cashiers.Count && !found)
+            {
+                if (!cashiers.ElementAt(index).Value.Active)
+                {
+                    found = true;
+                    person = cashiers.ElementAt(index).Value;
+                }
+                else
+                {
+                    index++;
+                }
+            }
+            return person;
         }
         #endregion
     }
