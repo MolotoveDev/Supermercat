@@ -107,6 +107,52 @@ namespace Supermercat
             return (int)Math.Round(totalInvoiced * 0.01);
         }
 
+        /// <summary>
+        /// Method to process the items in the shopping list and update the stock of the items in the warehouse.
+        /// </summary>
+        /// <param name="cart">Cart where the items will get processed.</param>
+        /// <returns>Double with the total the client must pay</returns>
+        public static double ProcessItems(ShoppingCart cart)
+        {
+            //WARNING: This method is a bit spaghetti code, probablly it could be improved and fixed with a better structure.
+            double total = 0;
+            for (int i = 0; i <= cart.ShoppingList.Count - 1; i++)
+            {
+                if (cart.shoppingList.Values.ElementAt(i) > cart.ShoppingList.ElementAt(i).Key.Stock) //If the quantity in the shopping list is greater than the stock, set it to the stock value.
+                {
+                    cart.ShoppingList[cart.ShoppingList.ElementAt(i).Key] = cart.ShoppingList.ElementAt(i).Key.Stock; //Set the quantity to the stock value.
+                    cart.ShoppingList.ElementAt(i).Key.UpdateStock(cart.ShoppingList.ElementAt(i).Key, 0); //Update the stock of the item in the warehouse.
+                    Console.WriteLine("ATENCIÓ: No hi ha pro stock per a l'element " + cart.ShoppingList.ElementAt(i).Key.Description + ". S'ha ajustat la quantitat a " + cart.ShoppingList.ElementAt(i).Key.Stock + "."); //Notify the user
+                }
+                else
+                {
+                    cart.ShoppingList.ElementAt(i).Key.UpdateStock(cart.ShoppingList.ElementAt(i).Key, cart.ShoppingList.ElementAt(i).Key.Stock - cart.ShoppingList.Values.ElementAt(i)); //Update the stock of the item in the warehouse.
+                }
+                total += cart.ShoppingList.ElementAt(i).Key.Price * cart.ShoppingList.Values.ElementAt(i); //Calculate the total price of the shopping list.
+            }
+            return Math.Round(total, 2); //Return the total price of the shopping list.
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("**************");
+            sb.AppendLine("INFO CARRITO DE COMPRA CLIENT -> " + customer.FullNanme);
+            foreach (Item i in shoppingList.Keys)
+            {
+                if(i.OnSale)
+                {
+                    sb.AppendLine(i.Description + "      " + "CAT--->" + i.getCaregory + "      " + "QTY-->" + shoppingList[i] + "      " + "UNIT PRICE--->" + Math.Round(i.Price, 2) + "\u20AC" + "(*)");
+                }
+                else
+                {
+                    sb.AppendLine(i.Description + "      " + "CAT--->" + i.getCaregory + "      " + "QTY-->" + shoppingList[i] + "      " + "UNIT PRICE--->" + Math.Round(i.Price, 2) + "\u20AC" + "(*)");
+                }
+            }
+            sb.AppendLine("**************FI CARRITO COMPRA**************");
+            return sb.ToString();
+        }
+
         #endregion
     }
 }
