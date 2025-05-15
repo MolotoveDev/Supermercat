@@ -11,7 +11,7 @@ namespace Supermercat
 {
     internal class CheckOutLine
     {
-        #region attributes
+        #region Attributes
         private int _number;
         private Queue<ShoppingCart> queue;
         private Person cashier;
@@ -34,7 +34,7 @@ namespace Supermercat
 
         #endregion
 
-        #region methods
+        #region Methods
         /// <summary>
         /// method tries to enqueue the shopping cart if the line is active.
         /// </summary>
@@ -70,7 +70,7 @@ namespace Supermercat
                 next.Customer.AddInvoiceAmount(suma);
                 this.cashier.AddInvoiceAmount(suma);
 
-                points = RawPointsObtainedAtCheckout(suma);
+                points = next.RawPointsObtainedAtCheckout(suma);
                 next.Customer.AddPoints(points);
                 this.cashier.AddPoints(points);
 

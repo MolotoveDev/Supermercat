@@ -137,7 +137,7 @@ namespace Supermercat
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("**************");
-            sb.AppendLine("INFO CARRITO DE COMPRA CLIENT -> " + customer.FullNanme);
+            sb.AppendLine("INFO CARRITO DE COMPRA CLIENT -> " + customer.FullName);
             foreach (Item i in shoppingList.Keys)
             {
                 if(i.OnSale)
