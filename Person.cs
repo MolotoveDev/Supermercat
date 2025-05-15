@@ -15,7 +15,7 @@ namespace Supermercat
 {
     public abstract class Person : IComparable<Person>
     {
-        private string _fullNanme;
+        private string _fullName;
         private string _id;
         private int _points;
         private double _totalInvoiced;
