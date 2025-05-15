@@ -26,9 +26,9 @@ namespace Supermercat
             get { return active; }
             set { active = value; }
         }
-        public string FullNanme
+        public string FullName
         {
-            get { return _fullNanme; }
+            get { return _fullName; }
         }
         public abstract double GetRating { get; }
         /// <summary>
@@ -40,7 +40,7 @@ namespace Supermercat
         protected Person(string id, string fullName, int points)
         {
             _id = id;
-            _fullNanme = fullName;
+            _fullName = fullName;
             _points = points;
             _totalInvoiced = 0;
             active = false;
@@ -97,7 +97,7 @@ namespace Supermercat
             {
                 _fidelity_card = fidelityCard;
                 _id = id;
-                _fullNanme = fullName;
+                _fullName = fullName;
             }
             /// <summary>
             /// The property calculates the rating of a customer according to the gross amount 
@@ -132,7 +132,7 @@ namespace Supermercat
             }
             public override string ToString()
             {
-                return $"DNI/NIE-> {_id} NOM-> {_fullNanme} RATING-> {GetRating} vendes-> {_totalInvoiced}€ PUNTS->{_points} DISPONIBLE-> {base.ToString()}";
+                return $"DNI/NIE-> {_id} NOM-> {_fullName} RATING-> {GetRating} vendes-> {_totalInvoiced}€ PUNTS->{_points} DISPONIBLE-> {base.ToString()}";
             }
             public override bool Equals(object? obj)
             {
@@ -172,7 +172,7 @@ namespace Supermercat
             {
                 _joiningDate = joining_Date;
                 _id = id;
-                _fullNanme = fullName;
+                _fullName = fullName;
             }
             /// <summary>
             /// 
@@ -188,7 +188,7 @@ namespace Supermercat
             }
             public override string ToString()
             {
-                return $"DNI/NIE-> {_id} NOM-> {_fullNanme} RATING-> {GetRating} ANTIGUITAT-> {YearOfService} VENDES-> {_totalInvoiced}€ PUNTS->{_points} DISPONIBLE-> {base.ToString()}";
+                return $"DNI/NIE-> {_id} NOM-> {_fullName} RATING-> {GetRating} ANTIGUITAT-> {YearOfService} VENDES-> {_totalInvoiced}€ PUNTS->{_points} DISPONIBLE-> {base.ToString()}";
             }
         }
     }
