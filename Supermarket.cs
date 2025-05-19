@@ -11,16 +11,14 @@ namespace Supermercat
     {
         #region Attributes
         
-        string name;
-        string address;
+        private string name;
+        private string address;
         public static int MAXLINES = 5;
-        int activeLines;
-        //TODO: Add checkout class.
-        // CheckOutLine[] lines = new CheckOutLine[MAXLINES];
+        private int activeLines;
+        CheckOutLine[] lines = new CheckOutLine[MAXLINES];
         Dictionary<string, Person> cashiers;
         Dictionary<string, Person> customers;
         SortedDictionary<int, Item> warehouse;
-
 
         #endregion
 
@@ -30,10 +28,14 @@ namespace Supermercat
         {
             this.name = name;
             this.address = address;
-            this.activeLines = activeLines;
             LoadCustomers(fileCustomers);
             LoadCashiers(fileCashiers);
             LoadWarehouse(fileItems);
+            this.activeLines = activeLines;
+            for (int i = 0; i < activeLines - 1; i++)
+            {
+                lines[i] = new CheckOutLine(GetAvaibleCashier(), i + 1);
+            }
         }
 
         #endregion

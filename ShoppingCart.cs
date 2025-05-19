@@ -146,7 +146,7 @@ namespace Supermercat
                 }
                 else
                 {
-                    sb.AppendLine(i.Description + "      " + "CAT--->" + i.getCaregory + "      " + "QTY-->" + shoppingList[i] + "      " + "UNIT PRICE--->" + Math.Round(i.Price, 2) + "\u20AC" + "(*)");
+                    sb.AppendLine(i.Description + "      " + "CAT--->" + i.getCaregory + "      " + "QTY-->" + shoppingList[i] + "      " + "UNIT PRICE--->" + Math.Round(i.Price, 2) + "\u20AC");
                 }
             }
             sb.AppendLine("**************FI CARRITO COMPRA**************");

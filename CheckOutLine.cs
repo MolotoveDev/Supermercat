@@ -9,7 +9,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Supermercat
 {
-    internal class CheckOutLine
+    public class CheckOutLine
     {
         #region Attributes
         private int _number;
