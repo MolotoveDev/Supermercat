@@ -198,10 +198,11 @@ namespace Supermercat
             items.OrderBy(i => i.Stock);
             return items;
         }
+
         /// <summary>
-        /// 
+        /// Method to get any avaliable customer from the customers dictionary.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A avaliabable customer.</returns>
         public Person GetAvailableCustomer()
         {
             int index = 0;
@@ -222,10 +223,11 @@ namespace Supermercat
             }
             return person;
         }
+
         /// <summary>
-        /// 
+        /// Method to get any avaliable cashier from the cashiers dictionary.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A availabable cashier.</returns>
         public Person GetAvaibleCashier()
         {
             int index = 0;
@@ -246,7 +248,82 @@ namespace Supermercat
             }
             return person;
         }
+
+        /// <summary>
+        /// Method to add an additional line to the supermarket.
+        /// </summary>
+        /// <param name="line2Open">Number of the line to open.</param>
+        /// <exception cref="ArgumentException">Exception if the line to open is bigger than the MAXLINES or the number of active lines is
+        /// at the limit or if the line2Open is already opened.</exception>
+        public void OpenCheckOutLine(int line2Open)
+        {
+            if (activeLines >= MAXLINES || line2Open > MAXLINES) throw new ArgumentException("ERROR: No hi ha prou caixes disponibles");
+            if (lines.Length >= line2Open) throw new ArgumentException("ERROR: La caixa ja esta oberta");
+            lines[line2Open - 1] = new CheckOutLine(GetAvaibleCashier(), line2Open);
+            activeLines++;
+        }
+
+        /// <summary>
+        /// Method to get the object of the CheckOutLine class.
+        /// </summary>
+        /// <param name="lineNumber">Line number to get the object from</param>
+        /// <returns>Object of CheckOutLine based on the lineNumber or null if it doesn't exist.</returns>
+        public CheckOutLine? GetCheckOutLine(int lineNumber)
+        {
+            CheckOutLine? line = null;
+            line = lines[lineNumber - 1];
+            return line;
+        }
+
+        /// <summary>
+        /// Method to enqueue a shopping cart to the line.
+        /// </summary>
+        /// <param name="theCart">Cart to add to the line.</param>
+        /// <param name="line">Line the cart will be added.</param>
+        /// <returns>True if gets added, false if not.</returns>
+        public bool JoinTheQueue(ShoppingCart theCart, int line)
+        {
+            bool result = false;
+            if (lines[line] != null)
+            {
+                lines[line].CheckIn(theCart);
+                result = true;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Method to dequeue a shopping cart from the line.
+        /// </summary>
+        /// <param name="line">Line to dequeue the shopping cart from.</param>
+        /// <returns>True if the line exist and gets dequeued, false if not.</returns>
+        public bool Checkout(int line)
+        {
+            bool result = false;
+            if (lines[line] != null)
+            {
+                lines[line].CheckOut();
+                result = true;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Method toString to show the supermarket information.
+        /// </summary>
+        /// <returns>String with the supermarket information.</returns>
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(this.name);
+            sb.AppendLine(this.address);
+            for (int i = 0; i < lines.Length; i++)
+            {
+                sb.AppendLine(lines[i].ToString());
+            }
+            return sb.ToString();
+        }
+
         #endregion
     }
 }
- 
