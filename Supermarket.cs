@@ -170,9 +170,10 @@ namespace Supermercat
                 format = Enum.Parse<Item.Packaging>(valor, true); //Conversion of string to enum
                 priceEach = double.Parse(split[3]);
 
-                if (r.Next(0, 20) >= 15) sale = true;
+                if (r.Next(0, 100) > 85) sale = true;
+                else sale = false;
 
-                stock = r.Next(50, 125);
+                    stock = r.Next(50, 125);
                 minStock = r.Next(10, 49);
 
                 Item item = new Item(code, name, sale, priceEach, category, format, stock, minStock); //Constructor for the items
