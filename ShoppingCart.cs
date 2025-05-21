@@ -93,7 +93,7 @@ namespace Supermercat
             Random r = new Random();
             for (int i = 1; i <= r.Next(1, 10); i++)
             {
-                shoppingList.Add(warehouse.ElementAt(r.Next(0, warehouse.Count)).Value, r.Next(1, 5)); //Add a random item from the warehouse to the shopping list with a random quantity between 1 and 5.
+                shoppingList.Add(warehouse.ElementAt(r.Next(0, warehouse.Count - 1)).Value, r.Next(1, 5)); //Add a random item from the warehouse to the shopping list with a random quantity between 1 and 5.
             }
         }
 
@@ -122,7 +122,7 @@ namespace Supermercat
                 {
                     cart.ShoppingList[cart.ShoppingList.ElementAt(i).Key] = cart.ShoppingList.ElementAt(i).Key.Stock; //Set the quantity to the stock value.
                     cart.ShoppingList.ElementAt(i).Key.UpdateStock(cart.ShoppingList.ElementAt(i).Key, 0); //Update the stock of the item in the warehouse.
-                    Console.WriteLine("ATENCIÓ: No hi ha pro stock per a l'element " + cart.ShoppingList.ElementAt(i).Key.Description + ". S'ha ajustat la quantitat a " + cart.ShoppingList.ElementAt(i).Key.Stock + "."); //Notify the user
+                    Console.WriteLine("ATENCIÓ: No hi ha prou stock per a l'element " + cart.ShoppingList.ElementAt(i).Key.Description + ". S'ha ajustat la quantitat a " + cart.ShoppingList.ElementAt(i).Key.Stock + "."); //Notify the user
                 }
                 else
                 {

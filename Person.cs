@@ -9,17 +9,16 @@ using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
-using static Supermercat.Person;
 
 namespace Supermercat
 {
     public abstract class Person : IComparable<Person>
     {
-        private string _fullName;
-        private string _id;
-        private int _points;
-        private double _totalInvoiced;
-        private bool active;
+        protected string _fullName;
+        protected string _id;
+        protected int _points;
+        protected double _totalInvoiced;
+        protected bool active;
 
         public bool Active
         {
@@ -82,114 +81,113 @@ namespace Supermercat
         {
             return this.GetRating.CompareTo(other.GetRating);
         }
+    }
+    public class Customer : Person
+    {
+        private int? _fidelity_card;
 
-        public class Customer : Person
+        /// <summary>
+        /// Creates a new customer initializing the base class attributes + fidelity card attribute.
+        /// </summary>
+        /// <param name="id">Id from the new costumer</param>
+        /// <param name="fullName">fullName from the new costumer</param>
+        /// <param name="fidelityCard">fidelity card from the new costumer</param>
+        public Customer(string id, string fullName, int? fidelityCard) : base(id, fullName)
         {
-            private int? _fidelity_card;
-
-            /// <summary>
-            /// Creates a new customer initializing the base class attributes + fidelity card attribute.
-            /// </summary>
-            /// <param name="id">Id from the new costumer</param>
-            /// <param name="fullName">fullName from the new costumer</param>
-            /// <param name="fidelityCard">fidelity card from the new costumer</param>
-            public Customer(string id, string fullName, int? fidelityCard) : base(id, fullName)
+            _fidelity_card = fidelityCard;
+            _id = id;
+            _fullName = fullName;
+        }
+        /// <summary>
+        /// The property calculates the rating of a customer according to the gross amount 
+        /// of his/her purchases.The rating is the 2% of the customer’s purchases
+        /// </summary>
+        public override double GetRating
+        {
+            get
             {
-                _fidelity_card = fidelityCard;
-                _id = id;
-                _fullName = fullName;
-            }
-            /// <summary>
-            /// The property calculates the rating of a customer according to the gross amount 
-            /// of his/her purchases.The rating is the 2% of the customer’s purchases
-            /// </summary>
-            public override double GetRating
-            {
-                get
+                double resposta = 0;
+                if (_totalInvoiced != 0)
                 {
-                    double resposta = 0;
-                    if (_totalInvoiced != 0)
-                    {
-                        resposta = (2 / _totalInvoiced) *100;
-                    }
-                    return resposta;
+                    resposta = (2 / _totalInvoiced) * 100;
                 }
-
+                return resposta;
             }
 
+        }
 
-            /// <summary>
-            /// adds the points parameter to the current points of the customer 
-            /// except if the customer hasn't a fidelity card.In this case points are lost (no added to anything)
-            /// </summary>
-            /// <param name="pointsToAdd">points to add</param>
-            public override void AddPoints(int pointsToAdd)
+        /// <summary>
+        /// adds the points parameter to the current points of the customer 
+        /// except if the customer hasn't a fidelity card.In this case points are lost (no added to anything)
+        /// </summary>
+        /// <param name="pointsToAdd">points to add</param>
+        public override void AddPoints(int pointsToAdd)
+        {
+            if (_id != "CASH")
             {
-                if(_id != "CASH")
-                {
-                    _points += pointsToAdd;
-                }
-            }
-            public override string ToString()
-            {
-                return $"DNI/NIE-> {_id} NOM-> {_fullName} RATING-> {GetRating} vendes-> {_totalInvoiced}€ PUNTS->{_points} DISPONIBLE-> {base.ToString()}";
-            }
-            public override bool Equals(object? obj)
-            {
-                bool igual;
-                if (ReferenceEquals(null, obj)) igual = false;
-                else if (ReferenceEquals(this, obj)) igual = true;
-                else if (obj.GetType() != this.GetType()) igual = false;
-                else igual = this.Equals((Customer)obj);
-                return igual;
-            }
-            private bool Equals(Customer other)
-            {
-               return this.active == other.active;
+                _points += pointsToAdd;
             }
         }
-        public class Cashier : Person
+        public override string ToString()
         {
-           
-            private DateTime _joiningDate;
-            /// <summary>
-            /// the complete years of service in the supermarket the cashier was hired.
-            /// </summary>
-            public int YearOfService
+            return $"DNI/NIE-> {_id} NOM-> {_fullName} RATING-> {GetRating} vendes-> {_totalInvoiced}€ PUNTS->{_points} DISPONIBLE-> {base.ToString()}";
+        }
+        public override bool Equals(object? obj)
+        {
+            bool igual;
+            if (ReferenceEquals(null, obj)) igual = false;
+            else if (ReferenceEquals(this, obj)) igual = true;
+            else if (obj.GetType() != this.GetType()) igual = false;
+            else igual = this.Equals((Customer)obj);
+            return igual;
+        }
+        private bool Equals(Customer other)
+        {
+            return this.active == other.active;
+        }
+    }
+
+    public class Cashier : Person
+    {
+
+        private DateTime _joiningDate;
+        /// <summary>
+        /// the complete years of service in the supermarket the cashier was hired.
+        /// </summary>
+        public int YearOfService
+        {
+            get
             {
-                get
-                {
-                    return (DateTime.Today - _joiningDate).Days / 365;
-                }
+                return (DateTime.Today - _joiningDate).Days / 365;
             }
-            /// <summary>
-            /// Creates a new cashier initializing the base class attributes + joining date attribute.
-            /// </summary>
-            /// <param name="id"></param>
-            /// <param name="fullName"></param>
-            /// <param name="joining_Date"></param>
-            public Cashier(string id, string fullName,DateTime joining_Date) : base(id, fullName)
-            {
-                _joiningDate = joining_Date;
-                _id = id;
-                _fullName = fullName;
-            }
-            /// <summary>
-            /// 
-            /// </summary>
-            public override double GetRating => (10 / _joiningDate.Day) * 100;
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <param name="pointsToAdd"></param>
-            public override void AddPoints(int pointsToAdd)
-            {
-               _points += (YearOfService + 1) * pointsToAdd;
-            }
-            public override string ToString()
-            {
-                return $"DNI/NIE-> {_id} NOM-> {_fullName} RATING-> {GetRating} ANTIGUITAT-> {YearOfService} VENDES-> {_totalInvoiced}€ PUNTS->{_points} DISPONIBLE-> {base.ToString()}";
-            }
+        }
+        /// <summary>
+        /// Creates a new cashier initializing the base class attributes + joining date attribute.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="fullName"></param>
+        /// <param name="joining_Date"></param>
+        public Cashier(string id, string fullName, DateTime joining_Date) : base(id, fullName)
+        {
+            _joiningDate = joining_Date;
+            _id = id;
+            _fullName = fullName;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public override double GetRating => (10 / _joiningDate.Day) * 100;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pointsToAdd"></param>
+        public override void AddPoints(int pointsToAdd)
+        {
+            _points += (YearOfService + 1) * pointsToAdd;
+        }
+        public override string ToString()
+        {
+            return $"DNI/NIE-> {_id} NOM-> {_fullName} RATING-> {GetRating} ANTIGUITAT-> {YearOfService} VENDES-> {_totalInvoiced}€ PUNTS->{_points} DISPONIBLE-> {base.ToString()}";
         }
     }
 }
