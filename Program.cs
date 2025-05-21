@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 
 namespace Supermercat
 {
@@ -138,11 +139,14 @@ namespace Supermercat
             Console.Clear();
             Random random = new Random();
             int numeroProducte = random.Next(0, super.Warehouse.Count - 1);
+            double valor;
             ShoppingCart cart = carros.ElementAt(random.Next(0, carros.Count - 1)).Value;
             Item producte = super.Warehouse.ElementAt(numeroProducte).Value;
             Console.WriteLine($"carros seleccionat: {cart}");
             Console.WriteLine($"producte seleccionat {producte}");
-            cart.AddOne(producte, random.NextDouble(0.0, producte.Stock)) ///
+            if(producte.PackagingType == "Kg") { valor = random.NextDouble() * 2; }
+            else { valor = random.Next(0, 5); }
+            cart.AddOne(producte, valor);
             Console.WriteLine($"carros seleccionat despres: {cart}");
             MsgNextScreen("PREM UNA TECLA PER ANAR AL MENÚ PRINCIPAL");
         }
