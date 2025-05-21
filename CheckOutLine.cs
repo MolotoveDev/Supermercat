@@ -30,6 +30,24 @@ namespace Supermercat
             _number = number;
             cashier = responsible;
             active = true;
+            queue = new Queue<ShoppingCart>();
+        }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Property to know if ther's any shopping cart in the line.
+        /// </summary>
+        public bool Empty
+        {
+            get
+            {
+                bool result = false;
+                if(queue.Count == 0) result = true;
+                return result;
+            }
         }
 
         #endregion
@@ -91,7 +109,7 @@ namespace Supermercat
             sb.AppendLine("*******");
             foreach(ShoppingCart cart in queue)
             {
-                sb.Append(cart.ToString);
+                sb.Append(cart.ToString());
             }
             return sb.ToString();
         }

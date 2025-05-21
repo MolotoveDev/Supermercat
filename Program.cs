@@ -5,18 +5,6 @@ namespace Supermercat
 {
     internal class Program
     {
-        //static void Main(string[] args)
-        //{
-        //    const string fileItems = "GROCERIES.txt";
-        //    const string fileCashiers = "CASHIERS.txt";
-        //    const string fileCustomers = "CUSTOMERS.txt";
-        //    Supermarket mercadona = new Supermarket("mercadona", "no se", fileCashiers, fileCustomers, fileItems, 1); //WORKS
-        //    mercadona.GetItemsByStock(); //WORKS
-        //    ShoppingCart cart = new ShoppingCart((Customer)mercadona.GetAvailableCustomer(), DateTime.Now);
-        //    cart.AddOne(mercadona.Warehouse.First().Value, 1); //WORKS
-        //    cart.AddAllRandomly(mercadona.Warehouse); //WORKS
-        //}
-
         public static void MostrarMenu()
         {
             Console.WriteLine("1- UN CLIENT ENTRA AL SUPER I OMPLE EL SEU CARRO DE LA COMPRA");
@@ -36,7 +24,7 @@ namespace Supermercat
             Console.OutputEncoding = System.Text.Encoding.UTF8;
 
             Supermarket super = new Supermarket("HIPERCAR", "C/Barna 99", "CASHIERS.TXT", "CUSTOMERS.TXT", "GROCERIES.TXT", 2);
-            //
+
             Dictionary<Customer, ShoppingCart> carrosPassejant = new Dictionary<Customer, ShoppingCart>();
 
             ConsoleKeyInfo tecla;
@@ -54,47 +42,48 @@ namespace Supermercat
                         DoAfegirUnArticleAlCarro(carrosPassejant, super);
 
                         break;
-                    //case ConsoleKey.D3:
-                    //    DoCheckIn(carrosPassejant, super);
+                    case ConsoleKey.D3:
+                        DoCheckIn(carrosPassejant, super);
 
-                    //    break;
-                    //case ConsoleKey.D4:
-                    //    if (DoCheckOut(super)) Console.WriteLine("BYE BYE. HOPE 2 SEE YOU AGAIN!");
-                    //    else Console.WriteLine("NO S'HA POGUT TANCAR CAP COMPRA");
+                        break;
+                    case ConsoleKey.D4:
+                        if (DoCheckOut(super)) Console.WriteLine("BYE BYE. HOPE 2 SEE YOU AGAIN!");
+                        else Console.WriteLine("NO S'HA POGUT TANCAR CAP COMPRA");
 
-                    //    break;
-                    //case ConsoleKey.D5:
-                    //    DoOpenCua(super);
+                        break;
+                    case ConsoleKey.D5:
+                        DoOpenCua(super);
 
-                    //    break;
-                    //case ConsoleKey.D6:
-                    //    DoInfoCues(super);
+                        break;
+                    case ConsoleKey.D6:
+                        DoInfoCues(super);
 
-                    //    break;
+                        break;
 
-                    //case ConsoleKey.D7:
-                    //    DoClientsComprant(carrosPassejant);
+                    case ConsoleKey.D7:
+                        DoClientsComprant(carrosPassejant);
 
 
-                    //    break;
-                    //case ConsoleKey.D8:
-                    //    DoListCustomers(super);
+                        break;
+                    case ConsoleKey.D8:
+                        DoListCustomers(super);
 
-                    //    break;
+                        break;
 
-                    //case ConsoleKey.D9:
-                    //    SortedSet<Item> articlesOrdenatsPerEstoc = super.GetItemsByStock();
-                    //    DoListArticlesByStock("LLISTAT D'ARTICLES - DATA " + DateTime.Now, articlesOrdenatsPerEstoc);
+                    case ConsoleKey.D9:
+                        SortedSet<Item> articlesOrdenatsPerEstoc = super.GetItemsByStock();
+                        DoListArticlesByStock("LLISTAT D'ARTICLES - DATA " + DateTime.Now, articlesOrdenatsPerEstoc);
 
-                    //    break;
-                    //case ConsoleKey.A:
-                    //    DoCloseQueue(super);
+                        break;
+                    case ConsoleKey.A:
+                        DoCloseQueue(super);
 
-                    //    break;
+                        break;
 
                     case ConsoleKey.D0:
                         MsgNextScreen("PRESS ANY KEY 2 EXIT");
                         break;
+
                     default:
                         MsgNextScreen("Error. Prem una tecla per tornar al menú...");
                         break;
@@ -168,8 +157,10 @@ namespace Supermercat
             {
                 bool trobat = false;
                 Random random = new Random();
-                CheckOutLine line = super.GetCheckOutLine(random.Next(0, super.ActiveLines - 1));
-                line.CheckIn(carros.ElementAt(carros.Count - 1).Value);
+                CheckOutLine line = super.GetCheckOutLine(random.Next(1, super.ActiveLines + 1));
+                int numeroCarro = random.Next(0, carros.Count - 1);
+                line.CheckIn(carros.ElementAt(numeroCarro).Value);
+                carros.Remove(carros.ElementAt(numeroCarro).Key);
             }
             MsgNextScreen("PREM UNA TECLA PER ANAR AL MENÚ PRINCIPAL");
         }
@@ -203,6 +194,7 @@ namespace Supermercat
         // OPCIO 5 : Obrir la següent cua disponible (si n'hi ha)
         public static bool DoOpenCua(Supermarket super)
         {
+            Console.Clear();
             bool fet = true;
             int lineasAnteriores = super.ActiveLines;
             super.OpenCheckOutLine(super.ActiveLines+1);
@@ -238,13 +230,12 @@ namespace Supermercat
         public static void DoClientsComprant(Dictionary<Customer, ShoppingCart> carros)
         {
             Console.Clear();
-            for(int i = 0; i < carros.Count; i++)
+            foreach (ShoppingCart cart in carros.Values)
             {
-                 Console.WriteLine(carros.Values.ToString());
+                Console.WriteLine(cart.ToString());
             }
-            Console.WriteLine("CARROS VOLTANT PEL SUPER (PENDENTS D'ANAR A PAGAR): ");
+            Console.WriteLine($"CARROS VOLTANT PEL SUPER (PENDENTS D'ANAR A PAGAR): {carros.Count}");
             MsgNextScreen("PREM UNA TECLA PER CONTINUAR");
-
         }
 
         //OPCIO 8 : LListat de clients per rating
@@ -258,11 +249,25 @@ namespace Supermercat
         /// <param name="super"></param>
         public static void DoListCustomers(Supermarket super)
         {
-
             Console.Clear();
 
-            MsgNextScreen("PREM UNA TECLA PER CONTINUAR");
+            int i = 0;
+            Dictionary<string, Person> diccionari = super.Customers;
+            Customer[] array = new Customer[diccionari.Count];
 
+            foreach (KeyValuePair<string, Person> costumer in diccionari)
+            {
+                array[i++] = (Customer)costumer.Value;
+            }
+
+            Array.Sort(array);
+
+            foreach (Customer customer in array)
+            {
+                Console.WriteLine(customer.ToString());
+            }
+
+            MsgNextScreen("PREM UNA TECLA PER CONTINUAR");
         }
 
         // OPCIO 9
@@ -275,7 +280,10 @@ namespace Supermercat
         {
             Console.Clear();
             Console.WriteLine(header);
-
+            foreach (Item i in items)
+            {
+                Console.WriteLine(i.ToString());
+            }
 
             MsgNextScreen("PREM UNA TECLA PER CONTINUAR");
         }
@@ -294,8 +302,26 @@ namespace Supermercat
         public static void DoCloseQueue(Supermarket super)
         {
             Console.Clear();
+            int line2Remove = 0;
+            bool found = false;
+            int i = super.ActiveLines;
 
+            while (!found && i != 0)
+            {
+                if (super.GetCheckOutLine(i).Empty)
+                {
+                    line2Remove = i;
+                    found = true;
+                }
+                i--;
+            }
 
+            if (line2Remove == 0) Console.WriteLine("No hi ha cues disponibles per tancar");
+            else
+            {
+                if (Supermarket.RemoveQueue(super, line2Remove)) Console.WriteLine("Cua tancada correctament");
+                else Console.WriteLine("No s'ha pogut tancar la cua");
+            }
 
             MsgNextScreen("PREM UNA TECLA PER CONTINUAR");
         }

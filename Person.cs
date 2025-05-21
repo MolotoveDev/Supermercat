@@ -107,9 +107,12 @@ namespace Supermercat
             get
             {
                 double resposta = 0;
-                if (_totalInvoiced != 0)
+                if (_id != "CASH")
                 {
-                    resposta = (2 / _totalInvoiced) * 100;
+                    if (_totalInvoiced != 0)
+                    {
+                        resposta = 0.02 * _totalInvoiced;
+                    }
                 }
                 return resposta;
             }

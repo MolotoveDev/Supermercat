@@ -170,9 +170,14 @@ namespace Supermercat
         /// <returns>Comparable result to sort items.</returns>
         public int CompareTo(Item? other)
         {
-            return this.stock.CompareTo(other.stock);
+            int stockComparison = this.stock.CompareTo(other.stock);
+            if (stockComparison == 0)
+            {
+                stockComparison = this.code.CompareTo(other.code); // Usa el código como criterio secundario
+            }
+            return stockComparison;
         }
-        
+
         #endregion
     }
 }

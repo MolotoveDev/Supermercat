@@ -32,9 +32,9 @@ namespace Supermercat
             LoadCashiers(fileCashiers);
             LoadWarehouse(fileItems);
             this.activeLines = activeLines;
-            for (int i = 0; i < activeLines - 1; i++)
+            for (int i = 1; i <= activeLines; i++)
             {
-                lines[i] = new CheckOutLine(GetAvaibleCashier(), i + 1);
+                lines[i - 1] = new CheckOutLine(GetAvaibleCashier(), i);
             }
         }
 
@@ -196,7 +196,6 @@ namespace Supermercat
             {
                 items.Add(i);
             }
-            items.OrderBy(i => i.Stock);
             return items;
         }
 
@@ -216,6 +215,7 @@ namespace Supermercat
                 {
                     found = true;
                     person = customers.ElementAt(index).Value;
+                    person.Active = true;
                 }
                 else
                 {
@@ -241,6 +241,7 @@ namespace Supermercat
                 {
                     found = true;
                     person = cashiers.ElementAt(index).Value;
+                    person.Active = true;
                 }
                 else
                 {
@@ -259,7 +260,7 @@ namespace Supermercat
         public void OpenCheckOutLine(int line2Open)
         {
             if (activeLines >= MAXLINES || line2Open > MAXLINES) throw new ArgumentException("ERROR: No hi ha prou caixes disponibles");
-            if (lines.Length >= line2Open) throw new ArgumentException("ERROR: La caixa ja esta oberta");
+            if (lines[line2Open - 1] != null) throw new ArgumentException("ERROR: La caixa ja esta oberta");
             lines[line2Open - 1] = new CheckOutLine(GetAvaibleCashier(), line2Open);
             activeLines++;
         }
@@ -323,6 +324,26 @@ namespace Supermercat
                 sb.AppendLine(lines[i].ToString());
             }
             return sb.ToString();
+        }
+
+        /// <summary>
+        /// Method to remove a line from the supermarket.
+        /// </summary>
+        /// <param name="super">Supermarket where the line will be deleted.</param>
+        /// <param name="lineToRemove">Line that will be deleted.</param>
+        /// <returns>True if the line gets deleted, false if not (Or if it was already deleted).</returns>
+        public static bool RemoveQueue(Supermarket super, int lineToRemove)
+        {
+            bool result = false;
+            if (super.lines[lineToRemove - 1] == null) { } //Pass
+            else
+            {
+                super.lines[lineToRemove - 1] = null;
+                super.activeLines--;
+                result = true;
+                return result;
+            }
+            return result;
         }
 
         #endregion
