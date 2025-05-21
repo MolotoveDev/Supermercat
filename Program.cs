@@ -141,9 +141,8 @@ namespace Supermercat
             ShoppingCart cart = carros.ElementAt(random.Next(0, carros.Count - 1)).Value;
             Item producte = super.Warehouse.ElementAt(numeroProducte).Value;
             Console.WriteLine($"carros seleccionat: {cart}");
-            Console.WriteLine($"producte seleccionat i cuantitat abans: {producte}");
-            cart.AddOne(producte, random.Next(0, (int)producte.Stock)); ////////
-            Console.WriteLine($"producte seleccionat i cuantitat: {producte}");
+            Console.WriteLine($"producte seleccionat {producte}");
+            cart.AddOne(producte, random.NextDouble(0.0, producte.Stock)) ///
             Console.WriteLine($"carros seleccionat despres: {cart}");
             MsgNextScreen("PREM UNA TECLA PER ANAR AL MENÚ PRINCIPAL");
         }
@@ -201,6 +200,9 @@ namespace Supermercat
         public static bool DoOpenCua(Supermarket super)
         {
             bool fet = true;
+            int lineasAnteriores = super.ActiveLines;
+            super.OpenCheckOutLine(super.ActiveLines+1);
+            if (lineasAnteriores == super.ActiveLines) {  fet = false; }; // si las linias activas siguen siendo de la misma cantidad (osea no se agrego otra) se deja fet com a false.
             MsgNextScreen("PREM UNA TECLA PER ANAR AL MENÚ PRINCIPAL");
             return fet;
         }
@@ -214,9 +216,11 @@ namespace Supermercat
         public static void DoInfoCues(Supermarket super)
         {
             Console.Clear();
-
+            for(int i = 1; i <= super.ActiveLines; i++)
+            {
+                Console.WriteLine(super.GetCheckOutLine(i).ToString());
+            }
             MsgNextScreen("PREM UNA TECLA PER CONTINUAR");
-
         }
 
 
@@ -230,6 +234,10 @@ namespace Supermercat
         public static void DoClientsComprant(Dictionary<Customer, ShoppingCart> carros)
         {
             Console.Clear();
+            for(int i = 0; i < carros.Count; i++)
+            {
+                 Console.WriteLine(carros.Values.ToString());
+            }
             Console.WriteLine("CARROS VOLTANT PEL SUPER (PENDENTS D'ANAR A PAGAR): ");
             MsgNextScreen("PREM UNA TECLA PER CONTINUAR");
 
