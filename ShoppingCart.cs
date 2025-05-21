@@ -91,9 +91,20 @@ namespace Supermercat
         public void AddAllRandomly(SortedDictionary<int, Item> warehouse)
         {
             Random r = new Random();
-            for (int i = 1; i <= r.Next(1, 10); i++)
+            int numberOfItemsToAdd = r.Next(1, 10); // Random number of items to add (between 1 and 10)
+
+            for (int i = 1; i < numberOfItemsToAdd; i++)
             {
-                shoppingList.Add(warehouse.ElementAt(r.Next(0, warehouse.Count - 1)).Value, r.Next(1, 5)); //Add a random item from the warehouse to the shopping list with a random quantity between 1 and 5.
+                Item randomItem = warehouse.ElementAt(r.Next(1, warehouse.Count - 1)).Value;    // Select a random item from the warehouse
+                double randomQuantity = r.Next(1, 5);   // Generate a random quantity between 1 and 5
+                if (shoppingList.ContainsKey(randomItem))   // Check if the item already exists in the shopping list
+                {
+                    shoppingList[randomItem] += randomQuantity; // Update the quantity in the shopping list
+                }
+                else
+                {   
+                    shoppingList.Add(randomItem, randomQuantity);   // Add the item to the shopping list
+                }
             }
         }
 
