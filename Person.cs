@@ -19,12 +19,17 @@ namespace Supermercat
         protected int _points;
         protected double _totalInvoiced;
         protected bool active;
-
+        /// <summary>
+        /// Property that shows if a person is active returning true, false if not.
+        /// </summary>
         public bool Active
         {
             get { return active; }
             set { active = value; }
         }
+        /// <summary>
+        /// Property that returns the full name of the person.
+        /// </summary>
         public string FullName
         {
             get { return _fullName; }
@@ -61,7 +66,7 @@ namespace Supermercat
             _totalInvoiced += amount;
         }
         /// <summary>
-        /// 
+        /// ToString method.
         /// </summary>
         /// <returns>Returns a string with S (if available) and N (if not available).</returns>
         public override string ToString()
@@ -72,11 +77,15 @@ namespace Supermercat
             return result;
         }
         /// <summary>
-        /// 
+        /// Method that adds points to the person.
         /// </summary>
         /// <param name="pointsToAdd"></param>
         public abstract void AddPoints(int pointsToAdd);
-
+        /// <summary>
+        /// Compares two people using getRating
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
         public int CompareTo(Person? other)
         {
             return this.GetRating.CompareTo(other.GetRating);
@@ -131,10 +140,19 @@ namespace Supermercat
                 _points += pointsToAdd;
             }
         }
+        /// <summary>
+        /// ToString method
+        /// </summary>
+        /// <returns>Returns all the information related to the customer as a string</returns>
         public override string ToString()
         {
             return $"DNI/NIE-> {_id} NOM-> {_fullName} RATING-> {GetRating} vendes-> {_totalInvoiced}€ PUNTS->{_points} DISPONIBLE-> {base.ToString()}";
         }
+        /// <summary>
+        /// Equals method
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns>Equals method that compares two customers and returns true if both are active</returns>
         public override bool Equals(object? obj)
         {
             bool igual;
@@ -167,9 +185,9 @@ namespace Supermercat
         /// <summary>
         /// Creates a new cashier initializing the base class attributes + joining date attribute.
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="fullName"></param>
-        /// <param name="joining_Date"></param>
+        /// <param name="id">The unique identifier of the cashier.</param>
+        /// <param name="fullName">The full name of the cashier.</param>
+        /// <param name="joining_Date">The date the cashier joined the company.</param>
         public Cashier(string id, string fullName, DateTime joining_Date) : base(id, fullName)
         {
             _joiningDate = joining_Date;
@@ -177,17 +195,21 @@ namespace Supermercat
             _fullName = fullName;
         }
         /// <summary>
-        /// 
+        /// Return Reting from cashier.
         /// </summary>
         public override double GetRating => (10 / _joiningDate.Day) * 100;
         /// <summary>
-        /// 
+        /// Add points to total points from cashier.
         /// </summary>
-        /// <param name="pointsToAdd"></param>
+        /// <param name="pointsToAdd">Points to add</param>
         public override void AddPoints(int pointsToAdd)
         {
             _points += (YearOfService + 1) * pointsToAdd;
         }
+        /// <summary>
+        /// To string method
+        /// </summary>
+        /// <returns>Returns all the information related to the cashier as a string</returns>
         public override string ToString()
         {
             return $"DNI/NIE-> {_id} NOM-> {_fullName} RATING-> {GetRating} ANTIGUITAT-> {YearOfService} VENDES-> {_totalInvoiced}€ PUNTS->{_points} DISPONIBLE-> {base.ToString()}";

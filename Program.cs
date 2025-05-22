@@ -142,7 +142,7 @@ namespace Supermercat
         // OPCIO 3 : Un dels carros que van pululant pel super  s'encua a una cua activa
         // La selecció del carro i de la cua és aleatòria
         /// <summary>
-        /// Agafem un dels carros passejant (random) i l'encuem a una de les cues actives
+        /// Agafem un dels carros passejant (random) i l'encuxem a una de les cues actives
         /// de pagament.
         /// També hem d'eliminar el carro seleccionat de la llista de carros que passejen 
         /// Si no hi ha cap carro passejant o no hi ha cap linia activa, cal donar missatge 
@@ -212,9 +212,23 @@ namespace Supermercat
         public static void DoInfoCues(Supermarket super)
         {
             Console.Clear();
-            for(int i = 1; i <= super.ActiveLines; i++)
+            bool trobat = false;
+            int i = 1;
+            int y = 1;
+            while(i <= super.ActiveLines)
             {
-                Console.WriteLine(super.GetCheckOutLine(i).ToString());
+                while(!trobat)
+                {
+                    if (super.GetCheckOutLine(y) is not null)
+                    {
+                        Console.WriteLine(super.GetCheckOutLine(y).ToString());
+                        trobat = true;
+                        y++;
+                    }
+                    else { y++; }
+                }
+                i++;
+                trobat = false;
             }
             MsgNextScreen("PREM UNA TECLA PER CONTINUAR");
         }
