@@ -106,9 +106,12 @@ namespace Supermercat
         {
             Console.Clear();
             Person customer = super.GetAvailableCustomer();
-            ShoppingCart cart = new ShoppingCart((Customer)customer, DateTime.Now);
-            cart.AddAllRandomly(super.Warehouse);
-            carros.Add((Customer)customer, cart);
+            if(customer != null)
+            {
+                ShoppingCart cart = new ShoppingCart((Customer)customer, DateTime.Now);
+                cart.AddAllRandomly(super.Warehouse);
+                carros.Add((Customer)customer, cart);
+            }
             MsgNextScreen("PREM UNA TECLA PER ANAR AL MENÚ PRINCIPAL");
         }
 
@@ -129,20 +132,22 @@ namespace Supermercat
             Random random = new Random();
             int numeroProducte = random.Next(0, super.Warehouse.Count - 1);
             double valor;
-            ShoppingCart cart = carros.ElementAt(random.Next(0, carros.Count - 1)).Value;
-            Item producte = super.Warehouse.ElementAt(numeroProducte).Value;
-            Console.WriteLine($"carros seleccionat: {cart}");
-            Console.WriteLine($"producte seleccionat {producte}");
-            if(producte.PackagingType == "Kg") { valor = random.NextDouble() * 2; }
-            else { valor = random.Next(0, 5); }
-            cart.AddOne(producte, valor);
-            Console.WriteLine($"carros seleccionat despres: {cart}");
+            if(carros.Count != 0)
+            {
+                ShoppingCart cart = carros.ElementAt(random.Next(0, carros.Count - 1)).Value;
+                Item producte = super.Warehouse.ElementAt(numeroProducte).Value;
+                Console.WriteLine($"carro seleccionat: {cart}");
+                if (producte.PackagingType == "Kg") { valor = random.NextDouble() * 2; }
+                else { valor = random.Next(0, 5); }
+                cart.AddOne(producte, valor);
+                Console.WriteLine($"carro seleccionat despres: {cart}");
+            }
             MsgNextScreen("PREM UNA TECLA PER ANAR AL MENÚ PRINCIPAL");
         }
         // OPCIO 3 : Un dels carros que van pululant pel super  s'encua a una cua activa
         // La selecció del carro i de la cua és aleatòria
         /// <summary>
-        /// Agafem un dels carros passejant (random) i l'encuxem a una de les cues actives
+        /// Agafem un dels carros passejant (random) i l'encuem a una de les cues actives
         /// de pagament.
         /// També hem d'eliminar el carro seleccionat de la llista de carros que passejen 
         /// Si no hi ha cap carro passejant o no hi ha cap linia activa, cal donar missatge 
@@ -153,15 +158,20 @@ namespace Supermercat
         public static void DoCheckIn(Dictionary<Customer, ShoppingCart> carros, Supermarket super)
         {
             Console.Clear();
-            if(carros.Count > 0 && super.ActiveLines > 0)
+            if (carros.Count > 0)
             {
-                bool trobat = false;
-                Random random = new Random();
-                CheckOutLine line = super.GetCheckOutLine(random.Next(1, super.ActiveLines + 1));
-                int numeroCarro = random.Next(0, carros.Count - 1);
-                line.CheckIn(carros.ElementAt(numeroCarro).Value);
-                carros.Remove(carros.ElementAt(numeroCarro).Key);
+                if (super.ActiveLines > 0)
+                {
+                    bool trobat = false;
+                    Random random = new Random();
+                    CheckOutLine line = super.GetCheckOutLine(random.Next(1, super.ActiveLines + 1));
+                    int numeroCarro = random.Next(0, carros.Count - 1);
+                    line.CheckIn(carros.ElementAt(numeroCarro).Value);
+                    carros.Remove(carros.ElementAt(numeroCarro).Key);
+                }
+                else Console.WriteLine("NO HI HA CAP LINIA ACTIVA");
             }
+            else Console.WriteLine("NO HI HA CAP CARRO");
             MsgNextScreen("PREM UNA TECLA PER ANAR AL MENÚ PRINCIPAL");
         }
 
@@ -173,7 +183,6 @@ namespace Supermercat
         /// </summary>
         /// <param name="super">necessari per fer el checkout</param>
         /// <returns>true si s'ha pogut fer el checkout. False en cas contrari</returns>
-
         public static bool DoCheckOut(Supermarket super)
         {
             bool fet = true;
@@ -195,12 +204,19 @@ namespace Supermercat
         public static bool DoOpenCua(Supermarket super)
         {
             Console.Clear();
-            bool fet = true;
-            int lineasAnteriores = super.ActiveLines;
-            super.OpenCheckOutLine(super.ActiveLines+1);
-            if (lineasAnteriores == super.ActiveLines) {  fet = false; }; // si las linias activas siguen siendo de la misma cantidad (osea no se agrego otra) se deja fet com a false.
+            bool trobat = false;
+            int i = 1;
+            while(!trobat && i <= 5)
+            {
+                if(super.GetCheckOutLine(i) == null)
+                {
+                    super.OpenCheckOutLine(i);
+                    trobat = true;
+                }
+                else { i++; }
+            }
             MsgNextScreen("PREM UNA TECLA PER ANAR AL MENÚ PRINCIPAL");
-            return fet;
+            return trobat;
         }
 
         //OPCIO 6 : Llistar les cues actives
@@ -222,6 +238,7 @@ namespace Supermercat
                     if (super.GetCheckOutLine(y) is not null)
                     {
                         Console.WriteLine(super.GetCheckOutLine(y).ToString());
+                        MsgNextScreen("prem una tecla per continuar ...");
                         trobat = true;
                         y++;
                     }
@@ -247,6 +264,7 @@ namespace Supermercat
             foreach (ShoppingCart cart in carros.Values)
             {
                 Console.WriteLine(cart.ToString());
+                MsgNextScreen("prem una tecla per continuar ...");
             }
             Console.WriteLine($"CARROS VOLTANT PEL SUPER (PENDENTS D'ANAR A PAGAR): {carros.Count}");
             MsgNextScreen("PREM UNA TECLA PER CONTINUAR");
@@ -267,16 +285,16 @@ namespace Supermercat
 
             int i = 0;
             Dictionary<string, Person> diccionari = super.Customers;
-            Customer[] array = new Customer[diccionari.Count];
+            Person[] array = new Person[diccionari.Count];
 
             foreach (KeyValuePair<string, Person> costumer in diccionari)
             {
-                array[i++] = (Customer)costumer.Value;
+                array[i++] = costumer.Value;
             }
 
-            Array.Sort(array);
+            Array.Sort(array); //Metoda contrari de Sort
 
-            foreach (Customer customer in array)
+            foreach (Person customer in array)
             {
                 Console.WriteLine(customer.ToString());
             }

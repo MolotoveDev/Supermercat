@@ -164,7 +164,7 @@ namespace Supermercat
         }
         private bool Equals(Customer other)
         {
-            return this.active == other.active;
+            return this._id == other._id;
         }
     }
 
